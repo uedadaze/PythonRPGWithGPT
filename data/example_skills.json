@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Power Strike",
+    "effects": [
+      {"effect_type": "damage", "coefficient": 1.5}
+    ]
+  },
+  {
+    "name": "Healing Light",
+    "effects": [
+      {"effect_type": "heal", "coefficient": 1.0}
+    ]
+  },
+  {
+    "name": "Poison Dart",
+    "effects": [
+      {"effect_type": "damage", "coefficient": 0.8},
+      {"effect_type": "status", "coefficient": 0.5, "status_name": "poison"}
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Slime",
+    "max_hp": 40,
+    "max_sp": 10,
+    "atk": 8,
+    "rcv": 5,
+    "speed": 5,
+    "action_count": 1,
+    "skills": [
+      {
+        "name": "Tackle",
+        "effects": [
+          {"effect_type": "damage", "coefficient": 1.0}
+        ]
+      }
+    ],
+    "status_effects": []
+  },
+  {
+    "name": "Goblin",
+    "max_hp": 60,
+    "max_sp": 20,
+    "atk": 12,
+    "rcv": 8,
+    "speed": 8,
+    "action_count": 1,
+    "skills": [
+      {
+        "name": "Slash",
+        "effects": [
+          {"effect_type": "damage", "coefficient": 1.2}
+        ]
+      }
+    ],
+    "status_effects": []
+  }
+]

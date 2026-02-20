@@ -1,0 +1,11 @@
+{
+  "name": "Hero",
+  "max_hp": 100,
+  "max_sp": 50,
+  "atk": 20,
+  "rcv": 15,
+  "speed": 10,
+  "action_count": 1,
+  "skills": [],
+  "status_effects": []
+}

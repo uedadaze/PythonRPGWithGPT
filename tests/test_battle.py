@@ -246,12 +246,12 @@ def test_player_defeats_multiple_enemies():
 
 
 # ---------------------------------------------------------------------------
-# Battle – action_count limits skills used per turn
+# Battle – action_count tracks actions and rotates skills
 # ---------------------------------------------------------------------------
 
 
 def test_action_count_limits_actions():
-    """A character with action_count=1 should only use 1 skill per turn."""
+    """Each actor should execute only one skill per turn."""
     player = make_char("Hero", max_hp=200, atk=10, speed=10, action_count=1,
                        skills=[damage_skill("Atk1"), damage_skill("Atk2")])
     enemy = make_char("Dummy", max_hp=500, atk=1, speed=1, skills=[damage_skill()])
@@ -261,12 +261,19 @@ def test_action_count_limits_actions():
 
 
 def test_action_count_two_uses_two_skills():
-    player = make_char("Hero", max_hp=200, atk=10, speed=10, action_count=2,
+    player = make_char("Hero", max_hp=200, atk=0, speed=10, action_count=7,
                        skills=[damage_skill("Atk1"), damage_skill("Atk2")])
-    enemy = make_char("Dummy", max_hp=500, atk=1, speed=1, skills=[damage_skill()])
+    enemy = make_char("Dummy", max_hp=500, atk=0, speed=1,
+                      skills=[damage_skill(coefficient=0.0)])
     result = Battle(player, [enemy]).run()
-    hero_actions = [a for a in result["turns"][0]["actions"] if a["actor"] == "Hero"]
-    assert len(hero_actions) == 2
+    hero_actions = [
+        a["skill"]["name"]
+        for turn in result["turns"][:4]
+        for a in turn["actions"]
+        if a["actor"] == "Hero"
+    ]
+    assert hero_actions == ["Atk1", "Atk2", "Atk1", "Atk2"]
+    assert player.action_count == len(result["turns"])
 
 
 # ---------------------------------------------------------------------------

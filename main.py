@@ -44,6 +44,7 @@ def _enemy_info(enemies: list) -> list:
 
 
 def main() -> None:
+    # こういう形で実行時引数を1つずつ指定できるようだ
     parser = argparse.ArgumentParser(description="Python RPG Battle System")
     parser.add_argument(
         "--skills", "-s",
@@ -69,10 +70,10 @@ def main() -> None:
         help="JSON file for the enemy roster (default: data/enemies.json)",
     )
     args = parser.parse_args()
-
+    # --を取っ払ったものをattributeとして取得可能
     player = load_characters_from_file(args.player)[0]
     enemies = load_characters_from_file(args.enemies)
-
+    # 出力としてenemy_infoを指定した場合敵の情報をJSON形式で出力する
     if args.output == "enemy_info":
         print(json.dumps(_enemy_info(enemies), ensure_ascii=False, indent=2))
         return

@@ -13,8 +13,8 @@ class Battle:
 
     Combat is fully automatic:
     1. Each turn, all living characters act in descending speed order.
-    2. Each character executes up to *action_count* skills from their skill
-       list (starting from index 0 each turn).
+    2. Each character executes one skill per action, selecting the skill by
+       cycling through their skill list based on total actions taken in battle.
     3. Each skill's effects are resolved in order:
        - ``"damage"``  → deal ``atk * coefficient`` HP damage to the target.
        - ``"heal"``    → restore ``rcv * coefficient`` HP to the actor.
@@ -139,6 +139,8 @@ class Battle:
     def run(self) -> Dict[str, Any]:
         """Execute the battle and return the full log as a JSON-serialisable dict."""
         turn_number = 0
+        for character in [self.player] + self.enemies:
+            character.action_count = 0
 
         while not self._is_over() and turn_number < _MAX_TURNS:
             turn_number += 1
@@ -158,11 +160,10 @@ class Battle:
             for actor in acting_order:
                 if not actor.is_alive() or self._is_over():
                     break
-                num_actions = min(actor.action_count, len(actor.skills))
-                for i in range(num_actions):
-                    if not actor.is_alive() or self._is_over():
-                        break
-                    turn_log["actions"].append(self._execute_skill(actor, i))
+                if actor.skills:
+                    skill_index = actor.action_count % len(actor.skills)
+                    turn_log["actions"].append(self._execute_skill(actor, skill_index))
+                    actor.action_count += 1
 
             self._tick_status_effects()
             self._turn_logs.append(turn_log)

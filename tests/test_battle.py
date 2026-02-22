@@ -261,7 +261,7 @@ def test_action_count_limits_actions():
 
 
 def test_action_count_two_uses_two_skills():
-    player = make_char("Hero", max_hp=200, atk=0, speed=10, action_count=7,
+    player = make_char("Hero", max_hp=200, atk=0, speed=10, action_count=1,
                        skills=[damage_skill("Atk1"), damage_skill("Atk2")])
     enemy = make_char("Dummy", max_hp=500, atk=0, speed=1,
                       skills=[damage_skill(coefficient=0.0)])
@@ -273,7 +273,10 @@ def test_action_count_two_uses_two_skills():
         if a["actor"] == "Hero"
     ]
     assert hero_actions == ["Atk1", "Atk2", "Atk1", "Atk2"]
-    assert player.action_count == len(result["turns"])
+    total_hero_actions = sum(
+        1 for turn in result["turns"] for a in turn["actions"] if a["actor"] == "Hero"
+    )
+    assert player.action_count == total_hero_actions
 
 
 # ---------------------------------------------------------------------------
